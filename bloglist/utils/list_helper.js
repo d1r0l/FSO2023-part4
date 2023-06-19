@@ -10,8 +10,11 @@ const totalLikes = (blogs) => {
   if (blogs.length === 0) {
     return 0
   } else {
-    const likesArray = blogs.map(blog => blog.likes)
-    const likesSum = likesArray.reduce((accumulator, currentValue) => accumulator + currentValue, 0)
+    const likesArray = blogs.map((blog) => blog.likes)
+    const likesSum = likesArray.reduce(
+      (accumulator, currentValue) => accumulator + currentValue,
+      0
+    )
     return likesSum
   }
 }
@@ -24,7 +27,7 @@ const favoriteBlog = (blogs) => {
       likes: 0
     }
   } else {
-    const likesArray = blogs.map(blog => blog.likes)
+    const likesArray = blogs.map((blog) => blog.likes)
     const maxLikes = Math.max(...likesArray)
     const maxLikesBlogIndex = likesArray.indexOf(maxLikes)
     const favoriteBlog = {
@@ -43,9 +46,12 @@ const mostBlogs = (blogs) => {
       blogs: 0
     }
   } else {
-    const autorsArray = blogs.map(blog => blog.author)
+    const autorsArray = blogs.map((blog) => blog.author)
     const autorsOccurences = _.countBy(autorsArray)
-    const mostOccurentAuthor = _.maxBy(_.keys(autorsOccurences), (key) => autorsOccurences[key])
+    const mostOccurentAuthor = _.maxBy(
+      _.keys(autorsOccurences),
+      (key) => autorsOccurences[key]
+    )
     const occurencyCount = autorsOccurences[mostOccurentAuthor]
 
     const mostBlogs = {
@@ -64,15 +70,22 @@ const mostLikes = (blogs) => {
       likes: 0
     }
   } else {
-    const repetetiveAuthorsLikes = blogs.map(blog => ({ [blog.author]: blog.likes }))
-    const authorsLikes = _.reduce(repetetiveAuthorsLikes, function(result, value) {
-      const key = _.keys(value)[0]
-      !result[key]
-        ? result[key] = value[key]
-        : result[key] += value[key]
-      return result
-    }, [])
-    const authorWithMostLikes = _.maxBy(_.keys(authorsLikes), (key) => authorsLikes[key])
+    const repetetiveAuthorsLikes = blogs.map((blog) => ({
+      [blog.author]: blog.likes
+    }))
+    const authorsLikes = _.reduce(
+      repetetiveAuthorsLikes,
+      function (result, value) {
+        const key = _.keys(value)[0]
+        !result[key] ? (result[key] = value[key]) : (result[key] += value[key])
+        return result
+      },
+      []
+    )
+    const authorWithMostLikes = _.maxBy(
+      _.keys(authorsLikes),
+      (key) => authorsLikes[key]
+    )
     const likesCount = authorsLikes[authorWithMostLikes]
 
     const mostLikes = {

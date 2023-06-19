@@ -69,7 +69,7 @@ test('dummy returns one', () => {
   expect(result).toBe(1)
 })
 
-describe ('Total likes' , () => {
+describe('Total likes', () => {
   test('of empty list is zero', () => {
     expect(listHelper.totalLikes(listWithNoBlogs)).toBe(0)
   })
@@ -83,92 +83,74 @@ describe ('Total likes' , () => {
   })
 })
 
-describe ('Favorite blog' , () => {
+describe('Favorite blog', () => {
   test('of empty list is zero', () => {
-    expect(listHelper.favoriteBlog(listWithNoBlogs)).toEqual(
-      {
-        title: 'No blogs was found',
-        author: 'No authors was found',
-        likes: 0
-      }
-    )
+    expect(listHelper.favoriteBlog(listWithNoBlogs)).toEqual({
+      title: 'No blogs was found',
+      author: 'No authors was found',
+      likes: 0
+    })
   })
 
   test('when list has only one blog', () => {
-    expect(listHelper.favoriteBlog(listWithOneBlog)).toEqual(
-      {
-        title: 'Go To Statement Considered Harmful',
-        author: 'Edsger W. Dijkstra',
-        likes: 5
-      }
-    )
+    expect(listHelper.favoriteBlog(listWithOneBlog)).toEqual({
+      title: 'Go To Statement Considered Harmful',
+      author: 'Edsger W. Dijkstra',
+      likes: 5
+    })
   })
 
   test('of a bigger list calculated right', () => {
-    expect(listHelper.favoriteBlog(listWithSeveralBlogs)).toEqual(
-      {
-        title: 'Canonical string reduction',
-        author: 'Edsger W. Dijkstra',
-        likes: 12
-      }
-    )
+    expect(listHelper.favoriteBlog(listWithSeveralBlogs)).toEqual({
+      title: 'Canonical string reduction',
+      author: 'Edsger W. Dijkstra',
+      likes: 12
+    })
   })
 })
 
-describe ('Author with most blogs' , () => {
+describe('Author with most blogs', () => {
   test('of empty list is zero', () => {
-    expect(listHelper.mostBlogs(listWithNoBlogs)).toEqual(
-      {
-        author: 'No authors was found',
-        blogs: 0
-      }
-    )
+    expect(listHelper.mostBlogs(listWithNoBlogs)).toEqual({
+      author: 'No authors was found',
+      blogs: 0
+    })
   })
 
   test('when list has only one blog', () => {
-    expect(listHelper.mostBlogs(listWithOneBlog)).toEqual(
-      {
-        author: 'Edsger W. Dijkstra',
-        blogs: 1
-      }
-    )
+    expect(listHelper.mostBlogs(listWithOneBlog)).toEqual({
+      author: 'Edsger W. Dijkstra',
+      blogs: 1
+    })
   })
 
   test('of a bigger list calculated right', () => {
-    expect(listHelper.mostBlogs(listWithSeveralBlogs)).toEqual(
-      {
-        author: 'Robert C. Martin',
-        blogs: 3
-      }
-    )
+    expect(listHelper.mostBlogs(listWithSeveralBlogs)).toEqual({
+      author: 'Robert C. Martin',
+      blogs: 3
+    })
   })
 })
 
-describe ('Author with most likes' , () => {
+describe('Author with most likes', () => {
   test('of empty list is zero', () => {
-    expect(listHelper.mostLikes(listWithNoBlogs)).toEqual(
-      {
-        author: 'No authors was found',
-        likes: 0
-      }
-    )
+    expect(listHelper.mostLikes(listWithNoBlogs)).toEqual({
+      author: 'No authors was found',
+      likes: 0
+    })
   })
 
   test('when list has only one blog', () => {
-    expect(listHelper.mostLikes(listWithOneBlog)).toEqual(
-      {
-        author: 'Edsger W. Dijkstra',
-        likes: 5
-      }
-    )
+    expect(listHelper.mostLikes(listWithOneBlog)).toEqual({
+      author: 'Edsger W. Dijkstra',
+      likes: 5
+    })
   })
 
   test('of a bigger list calculated right', () => {
-    expect(listHelper.mostLikes(listWithSeveralBlogs)).toEqual(
-      {
-        author: 'Edsger W. Dijkstra',
-        likes: 17
-      }
-    )
+    expect(listHelper.mostLikes(listWithSeveralBlogs)).toEqual({
+      author: 'Edsger W. Dijkstra',
+      likes: 17
+    })
   })
 })
