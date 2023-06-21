@@ -30,6 +30,19 @@ describe('API test', () => {
     const response = await api.get('/api/blogs')
     expect(response.body[0].id).toBeDefined()
   })
+
+  test ('request to the /api/blogs URL successfully creates a new blog post', async () => {
+    const newBlog = {
+      title: 'Development for Peace',
+      author: 'Catherine Defontaine',
+      url: 'https://blogs.worldbank.org/dev4peace',
+      likes: 7
+    }
+    const saveResponse = await new Blog(newBlog).save()
+    expect(saveResponse).toEqual(expect.objectContaining(newBlog))
+    const response = await api.get('/api/blogs')
+    expect(response.body.length).toBe(helper.initialBlogs.length + 1)
+  })
 })
 
 afterAll(async () => {
