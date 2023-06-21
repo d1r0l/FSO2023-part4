@@ -14,11 +14,11 @@ const noteSchema = new mongoose.Schema({
 const Note = mongoose.model('Note', noteSchema)
 
 const note = new Note({
-  content: "GET and POST are the most important methods of HTTP protocol",
+  content: 'GET and POST are the most important methods of HTTP protocol',
   important: false
 })
 
-note.save().then(result => {
+note.save().then(() => {
   console.log('note saved!')
   mongoose.connection.close()
 })
