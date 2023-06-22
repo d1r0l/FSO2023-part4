@@ -33,15 +33,25 @@ describe('API test', () => {
 
   test ('request to the /api/blogs URL successfully creates a new blog post', async () => {
     const newBlog = {
-      title: 'Development for Peace',
-      author: 'Catherine Defontaine',
-      url: 'https://blogs.worldbank.org/dev4peace',
+      title: 'Some title',
+      author: 'Some author',
+      url: 'https://someurl.io/',
       likes: 7
     }
     const saveResponse = await new Blog(newBlog).save()
     expect(saveResponse).toEqual(expect.objectContaining(newBlog))
     const response = await api.get('/api/blogs')
     expect(response.body.length).toBe(helper.initialBlogs.length + 1)
+  })
+
+  test ('if likes is missing it will default to 0', async () => {
+    const newBlog = {
+      title: 'Some title',
+      author: 'Some author',
+      url: 'https://someurl.io/'
+    }
+    const saveResponse = await new Blog(newBlog).save()
+    expect(saveResponse).toEqual(expect.objectContaining({ likes: 0 }))
   })
 })
 
