@@ -52,16 +52,16 @@ const initialBlogs = [
 ]
 
 const nonExistingId = async () => {
-  const note = new Blog({ title: 'willremovethissoon' })
-  await note.save()
-  await note.deleteOne()
+  const blog = new Blog({ title: 'willremovethissoon' })
+  await blog.save()
+  await blog.deleteOne()
 
-  return note._id.toString()
+  return blog._id.toString()
 }
 
 const blogsInDb = async () => {
-  const notes = await Blog.find({})
-  return notes.map(note => note.toJSON())
+  const blogs = await Blog.find({})
+  return blogs.map(note => note.toJSON())
 }
 
 module.exports = {

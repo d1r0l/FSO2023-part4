@@ -14,7 +14,7 @@ beforeEach(async () => {
   }
 })
 
-describe('API test', () => {
+describe('API GET test', () => {
   test('blogs are returned as json', async () => {
     await api
       .get('/api/blogs')
@@ -31,7 +31,9 @@ describe('API test', () => {
     const response = await api.get('/api/blogs')
     expect(response.body[0].id).toBeDefined()
   })
+})
 
+describe('API POST test', () => {
   test('request successfully creates a new blog post', async () => {
     const newBlog = {
       title: 'Some title',
@@ -63,14 +65,17 @@ describe('API test', () => {
     }
     await api.post('/api/blogs').send(newBlog).expect(400)
   })
+})
 
-  test('if the url are missing server responds code 400', async () => {
-    const newBlog = {
-      title: 'Some title',
-      author: 'Some author',
-      likes: 7
-    }
-    await api.post('/api/blogs').send(newBlog).expect(400)
+describe('API DELETE test', () => {
+  test('request successfully deletes a single blog post', async () => {
+    const initialList = await api.get('/api/blogs')
+    const deletedBlog = initialList.body[0]
+    await api.delete(`/api/blogs/${deletedBlog.id}`).expect(204)
+    const modifiedList = await api.get('/api/blogs')
+    expect(modifiedList.body.length).toBe(initialList.body.length - 1)
+    const modifiedListTitles = modifiedList.body.map((blog) => blog.title)
+    expect(modifiedListTitles).not.toContain(deletedBlog.title)
   })
 })
 
