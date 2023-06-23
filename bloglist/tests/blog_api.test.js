@@ -74,6 +74,20 @@ describe('Blog deletion', () => {
   })
 })
 
+describe('Blog updating', () => {
+  test('request successfully updates blog likes count', async () => {
+    const updatedBlogId = '5a422ba71b54a676234d17fb'
+    const updatedBlog =   {
+      title: 'TDD harms architecture',
+      author: 'Robert C. Martin',
+      url: 'http://blog.cleancoder.com/uncle-bob/2017/03/03/TDD-Harms-Architecture.html',
+      likes: 3
+    }
+    const response = await api.put(`/api/blogs/${updatedBlogId}`).send(updatedBlog).expect(200)
+    expect(response.body).toEqual(expect.objectContaining(updatedBlog))
+  })
+})
+
 afterAll(async () => {
   await mongoose.connection.close()
 })
