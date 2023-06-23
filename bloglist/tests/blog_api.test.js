@@ -7,14 +7,10 @@ const Blog = require('../models/blog')
 
 beforeEach(async () => {
   await Blog.deleteMany({})
-
-  for (let blog of helper.initialBlogs) {
-    let blogObject = new Blog(blog)
-    await blogObject.save()
-  }
+  await Blog.insertMany(helper.initialBlogs)
 })
 
-describe('API GET test', () => {
+describe('Blogs vieving', () => {
   test('blogs are returned as json', async () => {
     await api
       .get('/api/blogs')
@@ -33,7 +29,7 @@ describe('API GET test', () => {
   })
 })
 
-describe('API POST test', () => {
+describe('Blog saving', () => {
   test('request successfully creates a new blog post', async () => {
     const newBlog = {
       title: 'Some title',
@@ -41,10 +37,10 @@ describe('API POST test', () => {
       url: 'https://someurl.io/',
       likes: 7
     }
-    const postResponse = await api.post('/api/blogs').send(newBlog).expect(201)
-    expect(postResponse.body).toEqual(expect.objectContaining(newBlog))
-    const getResponse = await api.get('/api/blogs')
-    expect(getResponse.body.length).toBe(helper.initialBlogs.length + 1)
+    const response = await api.post('/api/blogs').send(newBlog).expect(201)
+    expect(response.body).toEqual(expect.objectContaining(newBlog))
+    const currentBlogs = await helper.blogsInDb()
+    expect(currentBlogs.length).toBe(helper.initialBlogs.length + 1)
   })
 
   test('if likes is missing it will default to 0', async () => {
@@ -53,8 +49,8 @@ describe('API POST test', () => {
       author: 'Some author',
       url: 'https://someurl.io/'
     }
-    const postResponse = await api.post('/api/blogs').send(newBlog).expect(201)
-    expect(postResponse.body).toEqual(expect.objectContaining({ likes: 0 }))
+    const response = await api.post('/api/blogs').send(newBlog).expect(201)
+    expect(response.body).toEqual(expect.objectContaining({ likes: 0 }))
   })
 
   test('if the title are missing server responds code 400', async () => {
@@ -67,15 +63,14 @@ describe('API POST test', () => {
   })
 })
 
-describe('API DELETE test', () => {
+describe('Blog deletion', () => {
   test('request successfully deletes a single blog post', async () => {
-    const initialList = await api.get('/api/blogs')
-    const deletedBlog = initialList.body[0]
-    await api.delete(`/api/blogs/${deletedBlog.id}`).expect(204)
-    const modifiedList = await api.get('/api/blogs')
-    expect(modifiedList.body.length).toBe(initialList.body.length - 1)
-    const modifiedListTitles = modifiedList.body.map((blog) => blog.title)
-    expect(modifiedListTitles).not.toContain(deletedBlog.title)
+    const deletedBlog = helper.initialBlogs[0]
+    await api.delete(`/api/blogs/${deletedBlog._id}`).expect(204)
+    const currentBlogs = await helper.blogsInDb()
+    expect(currentBlogs.length).toBe(helper.initialBlogs.length - 1)
+    const currentBlogsTitles = currentBlogs.map((blog) => blog.title)
+    expect(currentBlogsTitles).not.toContain(deletedBlog.title)
   })
 })
 
