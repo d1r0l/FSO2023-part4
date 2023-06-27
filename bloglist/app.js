@@ -9,16 +9,16 @@ const blogsRouter = require('./controllers/blogs')
 
 mongoose.set('strictQuery', false)
 
-mongoose.connect(MONGODB_URI)
+const connectToMongoose = async () => {
+  try {
+    await mongoose.connect(MONGODB_URI)
+    logger.info('Connected to MongoDB')
+  } catch (error) {
+    logger.error('Error connecting to MongoDB:', error.message)
+  }
+}
 
-mongoose
-  .connect(MONGODB_URI)
-  .then(() => {
-    logger.info('connected to MongoDB')
-  })
-  .catch((error) => {
-    logger.error('error connecting to MongoDB:', error.message)
-  })
+connectToMongoose()
 
 app.use(cors())
 app.use(express.json())
