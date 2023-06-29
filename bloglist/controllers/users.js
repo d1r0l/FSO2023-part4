@@ -10,8 +10,10 @@ usersRouter.get('/', async (request, response) => {
 
 usersRouter.post('/', async (request, response) => {
   const { username, password, name } = request.body
-  if (password.length < 3) {
-    response.status(400).json(`Password validation failed: password: Path \`password\` (\`${password}\`) is shorter than the minimum allowed length (3).`)
+  if (!password) {
+    response.status(400).json('User validation failed: password: Path `password` is required.')
+  } else if (password.length < 3) {
+    response.status(400).json(`User validation failed: password: Path \`password\` (\`${password}\`) is shorter than the minimum allowed length (3).`)
   } else {
     try {
       const saltRounds = 10

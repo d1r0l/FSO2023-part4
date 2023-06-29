@@ -1,4 +1,5 @@
 const Blog = require('../models/blog')
+const User = require('../models/user')
 
 const initialBlogs = [
   {
@@ -51,7 +52,7 @@ const initialBlogs = [
   }
 ]
 
-const nonExistingId = async () => {
+const nonExistingBlogId = async () => {
   const blog = new Blog({ title: 'willremovethissoon' })
   await blog.save()
   await blog.deleteOne()
@@ -64,6 +65,43 @@ const blogsInDb = async () => {
   return blogs.map(note => note.toJSON())
 }
 
+const initialUsers = [
+  {
+    _id: '649c5a3dbde108c86dfdc722',
+    username: 'vscode',
+    passwordHash: '$2b$10$PiweHyBWpfK.mvyuFC76eOgv73u3DJrc/0CexaRFZ7jwjyyjruh7m',
+    name: 'Visualio Studiolo Codebua',
+    __v: 0
+  },
+  {
+    _id: '649c5fb731e265bf95647f9f',
+    username: 'nastya',
+    passwordHash: '$2b$10$K3LE2Pakui3mvohGRwttMu2wMkGMe98VsRAQ22vdI7hk5IwyI42H2',
+    name: 'Anastasiia Konkova',
+    __v: 0
+  },
+  {
+    _id: '649c6894bf0369bed205d94e',
+    username: 'postman',
+    passwordHash: '$2b$10$txHin8C5sK9CwrQ1akBWvum0IJjeDoyj3B8U11yFgpoKUL29IGOGO',
+    name: 'Pochtalion Pechkin',
+    __v: 0
+  },
+]
+
+const nonExistingUserId = async () => {
+  const user = new User({ username: 'willremovethissoon' })
+  await user.save()
+  await user.deleteOne()
+
+  return user._id.toString()
+}
+
+const usersInDb = async () => {
+  const users = await User.find({})
+  return users.map(user => user.toJSON())
+}
+
 module.exports = {
-  initialBlogs, nonExistingId, blogsInDb
+  initialBlogs, nonExistingBlogId, blogsInDb, initialUsers, nonExistingUserId, usersInDb
 }
