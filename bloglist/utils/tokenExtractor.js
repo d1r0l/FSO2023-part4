@@ -1,6 +1,6 @@
-const tokenExtractor = (request, response, next) => {
+const tokenExtractor = async(request, response, next) => {
   if (request){
-    const authorization = request.get('authorization')
+    const authorization = await request.get('authorization')
     if (authorization && authorization.startsWith('Bearer ')) {
       const token = authorization.replace('Bearer ', '')
       request.token = token
