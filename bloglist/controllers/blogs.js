@@ -11,50 +11,33 @@ blogsRouter.get('/', async (request, response) => {
 })
 
 blogsRouter.post('/', async (request, response) => {
-  try {
-    const decodedToken = jwt.verify(request.token, KEY)
-    const user = await User.findOne({ _id: decodedToken.id })
-    if (!user) throw new Error ('User')
-    const body = {
-      title: request.body.title,
-      author: request.body.author,
-      url: request.body.url,
-      likes: request.body.likes,
-      user: user._id
-    }
-    const blog = new Blog(body)
-    const returnedBlog = await blog.save()
-    user.blogs = user.blogs.concat(returnedBlog._id)
-    await user.save()
-    response.status(201).json(returnedBlog)
-  } catch (error) {
-    if (error.name.includes('JsonWebTokenError')) response.status(401).json('invalid token')
-    else response.status(400).json(error.message)
+  const decodedToken = jwt.verify(request.token, KEY)
+  const user = await User.findOne({ _id: decodedToken.id })
+  if (!user) throw new Error ('invalid user id')
+  const body = {
+    title: request.body.title,
+    author: request.body.author,
+    url: request.body.url,
+    likes: request.body.likes,
+    user: user._id
   }
+  const blog = new Blog(body)
+  const returnedBlog = await blog.save()
+  user.blogs = user.blogs.concat(returnedBlog._id)
+  await user.save()
+  response.status(201).json(returnedBlog)
 })
 
 blogsRouter.delete('/:id', async (request, response) => {
-  try {
-    const decodedToken = jwt.verify(request.token, KEY)
-    const blog = await Blog.findOne({ _id: request.params.id })
-    if (!blog) throw new Error ('Blog')
-    const user = await User.findOne({ _id: decodedToken.id })
-    if (!user) throw new Error ('User')
-    if (user._id.toString() === blog.user.toString()) {
-      await Blog.findByIdAndRemove(request.params.id)
-      response.status(204).end()
-    } else throw new Error('deletion rejected: blog created by another user')
-  } catch (error) {
-    if (error.name.includes('JsonWebTokenError')) {
-      response.status(401).json('invalid token')
-    } else if (error.message.includes('Blog')) {
-      response.status(400).json('invalid blog id')
-    } else if (error.message.includes('User')) {
-      response.status(400).json('invalid user id')
-    } else {
-      response.status(400).json(error.message)
-    }
-  }
+  const decodedToken = jwt.verify(request.token, KEY)
+  const blog = await Blog.findOne({ _id: request.params.id })
+  if (!blog) throw new Error ('invalid blog id')
+  const user = await User.findOne({ _id: decodedToken.id })
+  if (!user) throw new Error ('invalid user id')
+  if (user._id.toString() === blog.user.toString()) {
+    await Blog.findByIdAndRemove(request.params.id)
+    response.status(204).end()
+  } else throw new Error('deletion rejected: blog created by another user')
 })
 
 blogsRouter.put('/:id', async (request, response) => {
