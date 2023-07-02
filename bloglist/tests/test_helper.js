@@ -8,6 +8,7 @@ const initialBlogs = [
     author: 'Michael Chan',
     url: 'https://reactpatterns.com/',
     likes: 7,
+    user: '649c5a3dbde108c86dfdc722',
     __v: 0
   },
   {
@@ -15,6 +16,7 @@ const initialBlogs = [
     title: 'Go To Statement Considered Harmful',
     author: 'Edsger W. Dijkstra',
     url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
+    user: '649c5fb731e265bf95647f9f',
     likes: 5,
     __v: 0
   },
@@ -23,6 +25,7 @@ const initialBlogs = [
     title: 'Canonical string reduction',
     author: 'Edsger W. Dijkstra',
     url: 'http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html',
+    user: '649c5a3dbde108c86dfdc722',
     likes: 12,
     __v: 0
   },
@@ -31,6 +34,7 @@ const initialBlogs = [
     title: 'First class tests',
     author: 'Robert C. Martin',
     url: 'http://blog.cleancoder.com/uncle-bob/2017/05/05/TestDefinitions.htmll',
+    user: '649c5a3dbde108c86dfdc722',
     likes: 10,
     __v: 0
   },
@@ -39,6 +43,7 @@ const initialBlogs = [
     title: 'TDD harms architecture',
     author: 'Robert C. Martin',
     url: 'http://blog.cleancoder.com/uncle-bob/2017/03/03/TDD-Harms-Architecture.html',
+    user: '649c5fb731e265bf95647f9f',
     likes: 0,
     __v: 0
   },
@@ -48,6 +53,41 @@ const initialBlogs = [
     author: 'Robert C. Martin',
     url: 'http://blog.cleancoder.com/uncle-bob/2016/05/01/TypeWars.html',
     likes: 2,
+    user: '649c6894bf0369bed205d94e',
+    __v: 0
+  }
+]
+
+const initialUsers = [
+  {
+    _id: '649c5a3dbde108c86dfdc722',
+    username: 'vscode',
+    passwordHash:
+      '$2b$10$PiweHyBWpfK.mvyuFC76eOgv73u3DJrc/0CexaRFZ7jwjyyjruh7m',
+    name: 'Visualio Studiolo Codebua',
+    blogs: [
+      '5a422a851b54a676234d17f7',
+      '5a422b3a1b54a676234d17f9',
+      '5a422b891b54a676234d17fa'
+    ],
+    __v: 0
+  },
+  {
+    _id: '649c5fb731e265bf95647f9f',
+    username: 'nastya',
+    passwordHash:
+      '$2b$10$K3LE2Pakui3mvohGRwttMu2wMkGMe98VsRAQ22vdI7hk5IwyI42H2',
+    name: 'Anastasiia Konkova',
+    blogs: ['5a422aa71b54a676234d17f8', '5a422ba71b54a676234d17fb'],
+    __v: 0
+  },
+  {
+    _id: '649c6894bf0369bed205d94e',
+    username: 'postman',
+    passwordHash:
+      '$2b$10$txHin8C5sK9CwrQ1akBWvum0IJjeDoyj3B8U11yFgpoKUL29IGOGO',
+    name: 'Pochtalion Pechkin',
+    blogs: ['5a422bc61b54a676234d17fc'],
     __v: 0
   }
 ]
@@ -60,41 +100,17 @@ const nonExistingBlogId = async () => {
   return blog._id.toString()
 }
 
-const blogsInDb = async () => {
-  const blogs = await Blog.find({})
-  return blogs.map(note => note.toJSON())
-}
-
-const initialUsers = [
-  {
-    _id: '649c5a3dbde108c86dfdc722',
-    username: 'vscode',
-    passwordHash: '$2b$10$PiweHyBWpfK.mvyuFC76eOgv73u3DJrc/0CexaRFZ7jwjyyjruh7m',
-    name: 'Visualio Studiolo Codebua',
-    __v: 0
-  },
-  {
-    _id: '649c5fb731e265bf95647f9f',
-    username: 'nastya',
-    passwordHash: '$2b$10$K3LE2Pakui3mvohGRwttMu2wMkGMe98VsRAQ22vdI7hk5IwyI42H2',
-    name: 'Anastasiia Konkova',
-    __v: 0
-  },
-  {
-    _id: '649c6894bf0369bed205d94e',
-    username: 'postman',
-    passwordHash: '$2b$10$txHin8C5sK9CwrQ1akBWvum0IJjeDoyj3B8U11yFgpoKUL29IGOGO',
-    name: 'Pochtalion Pechkin',
-    __v: 0
-  },
-]
-
 const nonExistingUserId = async () => {
   const user = new User({ username: 'willremovethissoon' })
   await user.save()
   await user.deleteOne()
 
   return user._id.toString()
+}
+
+const blogsInDb = async () => {
+  const blogs = await Blog.find({})
+  return blogs.map(note => note.toJSON())
 }
 
 const usersInDb = async () => {
