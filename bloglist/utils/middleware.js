@@ -2,6 +2,10 @@ const { KEY } = require('../utils/config')
 const User = require('../models/user')
 const jwt = require('jsonwebtoken')
 
+const unknownEndpoint = (request, response) => {
+  response.status(404).send({ error: 'unknown endpoint' })
+}
+
 const tokenExtractor = async(request, response, next) => {
   if (request){
     const authorization = await request.get('authorization')
@@ -43,4 +47,11 @@ const errorHandler = (error, request, response, next) => {
   next(error)
 }
 
-module.exports = { tokenExtractor, userExtractor, errorHandler }
+const middleware = {
+  unknownEndpoint,
+  tokenExtractor,
+  userExtractor,
+  errorHandler
+}
+
+module.exports = middleware
